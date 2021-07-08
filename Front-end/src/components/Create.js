@@ -1,11 +1,15 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const Create = () => {
         return (
             <>
             <section className='container'>
                 <div className="h-75 row w-100 g-0  shadow-sm">
-                    <div className="col-md-4 col-sm-12 bg-light ">
+                    <div className="d-flex align-items-center">
+                        <Link to="/ownrAcc" className="btn btn-sm btn-outline-success fw-bold ps-4 pe-4" >Back</Link>
+                    </div>
+                    <div className="col-md-4 col-sm-12 ">
                         <form className="col-12 p-4 rounded">
                             <h5 className="fw-bolder">Add Accommodation</h5>
                             <div className="col-md-12 my-3">
