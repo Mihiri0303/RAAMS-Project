@@ -7,6 +7,11 @@ import Home from './components/home';
 import My from './components/myList';
 import Accommodation from './components/acco';
 import Routr from './components/routr';
+import Dash from './components/dashbord';
+import Owner from './components/ownrAcc';
+import Report from './components/ownrRep';
+import Res from './components/ownrRes';
+import Create from './components/Create';
 
 
 function App() {
@@ -19,24 +24,44 @@ function App() {
       <Home/>
       {/* <Destinations/> */}
       </Route>
-      <Route path= "/routr">
+      <Route exact path= "/routr">
           <Routr />
       </Route>
 
-      <Route path= "/acco">
+      <Route exact path= "/dashbord">
+          <Dash />
+      </Route>
+
+      <Route exact path= "/acco">
           <Accommodation />
       </Route>
 
-      <Route path= "/myList">
+      <Route exact path= "/myList">
           <My />
       </Route>
 
-      <Route path= "/login">
+      <Route exact path= "/login">
           <Login />
       </Route>
 
-      <Route path= "/signup">
+      <Route exact path= "/signup">
           <SignUp />
+      </Route>
+
+      <Route exact path= "/ownrAcc">
+          <Owner />
+      </Route>
+
+      <Route exact path= "/ownrRes">
+          <Res />
+      </Route>
+
+      <Route exact path= "/ownrRep">
+          <Report />
+      </Route>
+
+      <Route exact path= "/ownrAcc/create">
+          <Create />
       </Route>
 
    </Router>

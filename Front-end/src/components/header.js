@@ -11,6 +11,7 @@ const Header = () => {
                     <div className='d-flex gap-3'>
                         <Link className="h6 text-decoration-none " to='/'>Home</Link>
                         <Link className="h6 text-decoration-none " to='/routr'>Router</Link>
+                        <Link className="h6 text-decoration-none " to='/dashbord'>Dashboard</Link>
                         <Link className="h6 text-decoration-none " to='/acco'>Accommodation</Link>
                         <Link className="h6 text-decoration-none " to='/myList'>My List</Link>
                     </div>
