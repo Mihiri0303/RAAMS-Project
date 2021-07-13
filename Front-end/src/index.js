@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap';
 import './index.css';
+import 'mapbox-gl/dist/mapbox-gl.css';
 import App from './App'
 
 
