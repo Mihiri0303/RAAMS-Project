@@ -1,7 +1,43 @@
-import React from 'react';
+import React ,{ useState, useEffect, useRef} from 'react';
+import mapboxgl from 'mapbox-gl';
 import { Link } from 'react-router-dom';
 
 const Create = () => {
+
+    const mapContainer = useRef();
+    const [lnglat, setLngLat] = useState([79.8998759,6.8278084]);
+    const [zoom, setZoom] = useState(8);
+    const [Locations,setLocations] = useState([]);
+    const [map,setMap] = useState();
+    mapboxgl.accessToken = 'pk.eyJ1IjoibGFzaXRoODc5IiwiYSI6ImNrbjV2eW1tcTA4N2IycnM0eDY4c2xuZ3QifQ.1b2qEsuBFBVNg682HGe7hw';
+
+    useEffect(() => {
+        const map = new mapboxgl.Map({
+            container: mapContainer.current,
+            style: 'mapbox://styles/mapbox/streets-v11',
+            center: lnglat,
+            zoom: zoom
+        });
+        var nav = new mapboxgl.NavigationControl({
+            visualizePitch : false,
+        });
+        var scale = new mapboxgl.ScaleControl({
+            maxWidth: 150,
+            unit: 'metrics'
+        });
+        var Geolocate = new mapboxgl.GeolocateControl({
+            positionOptions: {
+                enableHighAccuracy: true
+            },
+            trackUserLocation: true
+        })
+        map.addControl(nav, 'top-left');
+        map.addControl(scale);
+        map.addControl(Geolocate);
+        
+        setMap(map);
+        return () => map.remove();
+    },[]);
         return (
             <>
             <section className='container'>
@@ -44,7 +80,7 @@ const Create = () => {
                             <button className="btn btn-sm btn-primary w-100"><b>Save</b></button>
                         </form>
                     </div>
-                    {/* <div className="col-md-8 col-sm-12 rounded-end" style={{height: "65vh"}} id="Managemap" ref={mapContainer}/> */}
+                    <div className="col-md-8 col-sm-12 rounded-end" style={{height: "65vh"}} id="Managemap" ref={mapContainer}/>
                 </div>
             </section>
           </>
