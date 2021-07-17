@@ -1,6 +1,7 @@
 const express = require('express')
 const mongodb = require('./mongodb/mongodb')
 const acco = require('./routes/accommodation')
+const auth = require('./routes/auth')
 const app = express()
 
 const port = 8000
@@ -10,7 +11,8 @@ mongodb.then(async db => {
   await collection.forEach(data => console.log(data))
 }).catch(err => console.error(err))
 
-app.use('/accommodation',acco);
+app.use(auth)
+app.use('/accommodation',acco)
 
 app.get('/',(req,res) => {
     res.send('Hello World!')
