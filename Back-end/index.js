@@ -1,5 +1,9 @@
 const express = require('express')
+const mongoose  = require('mongoose');
 const mongodb = require('./mongodb/mongodb')
+const { Schema } = mongoose;
+
+
 const acco = require('./routes/accommodation')
 const auth = require('./routes/auth')
 const app = express()
@@ -7,8 +11,9 @@ const app = express()
 const port = 8000
 
 mongodb.then(async db => {
-  const collection = db.collection("devices").find();
-  await collection.forEach(data => console.log(data))
+  const MyModel = db.model('devices', new Schema({ name: String }))
+  const doc = await MyModel.find({});
+  console.log(doc)
 }).catch(err => console.error(err))
 
 app.use(auth)

@@ -1,12 +1,13 @@
 require('dotenv').config();
-const { MongoClient } = require('mongodb');
+const mongoose = require('mongoose');
 
 const url = process.env.DbConnection;
-const client = new MongoClient(url, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true });
 
 module.exports = new Promise((resolve,reject) => {
-    client.connect(async err => {
-        if(err) reject(err)
-        resolve(client.db('test'))
-    })
+    const db = mongoose.connection;
+    db.on('error', (err) => reject(err));
+    db.once('open', function() {
+        resolve(mongoose)
+    });
 });
