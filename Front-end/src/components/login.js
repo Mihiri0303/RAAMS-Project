@@ -1,5 +1,4 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
 import imge from './../asset/login.jpg';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
@@ -57,7 +56,7 @@ const Login = () => {
                         </Formik>
                     </div>
                     <div className="col-md-6 offset-md-1">
-                        <img src={imge} style={{height : '100%',width : 400}}/>
+                        <img src={imge} alt="imag" style={{height : '100%',width : 400}}/>
                     </div>
                 </div>
             </section>  
