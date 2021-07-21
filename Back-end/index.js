@@ -1,21 +1,15 @@
 const express = require('express')
-const mongoose  = require('mongoose');
-const mongodb = require('./mongodb/mongodb')
-const { Schema } = mongoose;
+const cors = require('cors');
 
-
-const acco = require('./routes/accommodation')
-const auth = require('./routes/auth')
+const acco = require('./Api/accommodation')
+const auth = require('./Api/auth')
 const app = express()
 
 const port = 8000
 
-mongodb.then(async db => {
-  const MyModel = db.model('devices', new Schema({ name: String }))
-  const doc = await MyModel.find({});
-  console.log(doc)
-}).catch(err => console.error(err))
+app.use(cors());
 
+app.use(express.json())
 app.use(auth)
 app.use('/accommodation',acco)
 
@@ -24,5 +18,5 @@ app.get('/',(req,res) => {
 })
 
 app.listen(port,() => {
-    console.log(`Example app listening at http://localhost:${port}`)
+    console.log(`API listening at http://localhost:${port}`)
 })
