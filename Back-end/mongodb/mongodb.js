@@ -4,10 +4,10 @@ const mongoose = require('mongoose');
 const url = process.env.DbConnection;
 mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true });
 
-module.exports = new Promise((resolve,reject) => {
+// module.exports = new Promise((resolve,reject) => {
     const db = mongoose.connection;
-    db.on('error', (err) => reject(err));
+    db.on('error', (err) => console.log(err));
     db.once('open', function() {
-        resolve(mongoose)
+        console.log("Mongodb Connected !");
     });
-});
+// });

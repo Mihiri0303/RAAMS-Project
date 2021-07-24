@@ -1,14 +1,15 @@
-const { Schema } = require('mongoose');
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
 const accommodation = new Schema({
     Title : { type : String, required : true },
     Address : { type : String },
-    Amount : { type : Schema.Types.Decimal128, required : true },
-    Latitude : { type : String, required : true },
-    Longitude : { type : String, required : true },
+    Amount : { type : Number, required : true },
+    Latitude : { type : Number, required : true },
+    Longitude : { type : Number, required : true },
     Mobile : { type : Number },
     Type : { type : String },
-    owner_id : {type : Schema.Types.ObjectId, refs : "user"}
+    Owner_id : {type : Schema.Types.ObjectId, refs : "user"}
 });
 
-module.exports = accommodation;
+module.exports =  mongoose.model('accommodations', accommodation);

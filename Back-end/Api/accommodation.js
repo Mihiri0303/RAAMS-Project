@@ -1,25 +1,80 @@
 const express = require('express');
 const router = express.Router();
-const { Schema } = require('mongoose');
-const mongodb = require('../mongodb/mongodb');
+const mongoose = require('mongoose');
 
-const accSchema = require('./../models/accommodation');
-let Acc = null;
-(async() => {
-    const db = await mongodb;
-    Acc = db.model('accommodation', accSchema);
-})();
+const accModel = require('./../models/accommodation');
 
-router.get('/',(req,res) => {
-    res.send('accommodation');
+router.get('/',async (req,res) => {
+    reqPram = req.query;
+    try {        
+        try{
+            let acc;
+            if(reqPram.owner) acc = await accModel.find({Owner_id : mongoose.Types.ObjectId(reqPram.owner)}).populate('Owner_id').exec();
+            else acc = await accModel.find({}).populate('Owner_id').exec();
+            res.status(200).json(acc);
+        }catch(err){
+            throw err;
+        }
+    } catch (error) {
+        console.log(error)
+        res.status(400).json({message : 'Something went wrong .!', error});
+    }
 })
 
-router.get('/:id',(req,res) => {
-    res.send("get"); // retrive accom data 
+router.get('/:id',async (req,res) => {
+    reqPram = req.params;
+    try {        
+        try{
+            const acc = await accModel.findById(reqPram.id).populate('Owner_id').exec();
+            res.status(200).json(acc);
+        }catch(err){
+            throw err;
+        }
+    } catch (error) {
+        console.log(error)
+        res.status(400).json({message : 'Something went wrong .!', error});
+    }
 })
 
-router.delete('/:id',(req,res) => {
-    res.send("deleted");
+router.put('/',async (req,res) => {
+    reqJson = req.body;
+    try{
+        const acc = new accModel({
+            Title : reqJson.Title,
+            Address : reqJson.Address,
+            Amount : reqJson.Amount,
+            Latitude : reqJson.Latitude,
+            Longitude : reqJson.Longitude,
+            Mobile : reqJson.Mobile,
+            Type : reqJson.Type,
+            Owner_id : mongoose.Types.ObjectId(reqJson.Owner_id)
+        }); 
+        try{
+            await acc.save();
+            await acc.populate('Owner_id').exec();
+            res.status(200).json(acc);
+        }catch(err){
+            throw err;
+        }
+    }catch(error){
+        console.log(error)
+        res.status(400).json({message : 'Something went wrong .!', error});
+    }
+})
+
+router.delete('/:id',async (req,res) => {
+    reqPram = req.params;
+    try {        
+        try{
+            const acc = await accModel.findByIdAndDelete(reqPram.id);
+            res.status(200).json({success : true, acc});
+        }catch(err){
+            throw err;
+        }
+    } catch (error) {
+        console.log(error)
+        res.status(400).json({message : 'Something went wrong .!', error});
+    }
 })
 
 module.exports = router;

@@ -1,33 +1,26 @@
 const express = require('express');
 const router = express.Router();
-const { Schema } = require('mongoose');
-const mongodb = require('../mongodb/mongodb')
-const userSchema = require('../models/user')
-let User = null;
-
-(async() => {
-    const db = await mongodb;
-    User = db.model('user', userSchema);
-})();
+const UserModel = require('../models/user')
 
 router.post('/login',async (req,res) => {
     reqJson = req.body;
     try {        
         try{
-            const user = await User.findOne({Email : reqJson.Email, Password : reqJson.Password});
+            const user = await UserModel.findOne({Email : reqJson.Email, Password : reqJson.Password});
             res.status(200).json(user);
         }catch(err){
             throw err;
         }
     } catch (error) {
-        res.status(400).json({messange : 'Something went wrong .!', error});
+        console.log(error)
+        res.status(400).json({message : 'Something went wrong .!', error});
     }
 })
 
 router.post('/signup',async (req,res) => {
     reqJson = req.body;
     try{
-        const user = new User({
+        const user = new UserModel({
             FirstName : reqJson.FirstName,
             LastName :  reqJson.LastName,
             Mobile :  reqJson.Mobile,
@@ -42,7 +35,8 @@ router.post('/signup',async (req,res) => {
             throw err;
         }
     }catch(error){
-        res.status(400).json({messange : 'Something went wrong .!', error});
+        console.log(error)
+        res.status(400).json({message : 'Something went wrong .!', error});
     }
 })
 
