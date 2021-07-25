@@ -9,7 +9,7 @@ const accommodation = new Schema({
     Longitude : { type : Number, required : true },
     Mobile : { type : Number },
     Type : { type : String },
-    Owner_id : {type : Schema.Types.ObjectId, refs : "user"}
+    Owner_id : {type : Schema.Types.ObjectId,  ref : 'users', required : true}
 });
 
 module.exports =  mongoose.model('accommodations', accommodation);

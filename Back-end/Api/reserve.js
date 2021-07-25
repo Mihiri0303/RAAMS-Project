@@ -14,7 +14,6 @@ router.put('/',async (req,res) => {
         });
         try{
             await userAcc.save();
-            await userAcc.populate('Acc_id').populate('User_id').exec();
             res.status(200).json(userAcc);
         }catch(err){
             throw err;
@@ -26,8 +25,11 @@ router.put('/',async (req,res) => {
 })
 
 router.get('/',async (req,res) => {
-    try {        
-        const userAcc = await UserAccModel.find({}).populate('Acc_id').populate('User_id').exec();
+    reqPram = req.query;
+    try {       
+        let userAcc; 
+        if(reqPram.User_id) userAcc = await UserAccModel.find({User_id : reqPram.User_id}).populate('Acc_id').populate('User_id','FirstName LastName Email Mobile UserRole').exec();
+        else userAcc = await UserAccModel.find({}).populate('Acc_id').populate('User_id','FirstName LastName Email Mobile UserRole').exec();
         res.status(200).json(userAcc);
     } catch (error) {
         console.log(error)
@@ -40,7 +42,7 @@ router.get('/:id',async (req,res) => {
     reqJson = req.params;
     try {        
         try{
-            const userAcc = await UserAccModel.findById(mongoose.Types.ObjectId(reqJson.id)).populate('Acc_id').populate('User_id').exec();
+            const userAcc = await UserAccModel.findById(mongoose.Types.ObjectId(reqJson.id)).populate('Acc_id').populate('User_id','FirstName LastName Email Mobile UserRole').exec();
             res.status(200).json(userAcc);
         }catch(err){
             throw err;
