@@ -7,10 +7,11 @@ ul {
   list-style-type: none;
 }
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  font-family: 'Merriweather Sans',-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
-}
+    font-weight: 200;
+  }
 .header {
   display: flex;
   align-items: center;
@@ -24,3 +25,49 @@ body {
   color: #fff;
 }
 
+
+.loader {
+  border-top-color: #3498db;
+  -webkit-animation: spinner 1.5s linear infinite;
+  animation: spinner 1.5s linear infinite;
+  height: 5rem;
+  width: 5rem;
+  border: 6px solid #555;
+  border-top: 6px solid #3498db;
+  border-radius: 50%;
+}
+
+@-webkit-keyframes spinner {
+  0% {
+      -webkit-transform: rotate(0deg);
+  }
+  100% {
+      -webkit-transform: rotate(360deg);
+  }
+}
+
+@keyframes spinner {
+  0% {
+      transform: rotate(0deg);
+  }
+  100% {
+      transform: rotate(360deg);
+  }
+}
+  
+.marker {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: white;
+  padding: 3px;
+  cursor: pointer;
+  transform: scale(0.5);
+}
+
+.marker::before{
+    content: url('./asset/AccIcon.png');
+    width: 10px;
+    height: 10px;
+    background-size: cover;
+}

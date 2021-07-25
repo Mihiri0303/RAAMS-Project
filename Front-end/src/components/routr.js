@@ -3,8 +3,10 @@ import mapboxgl from 'mapbox-gl';
 import Route from '../script/Route';
 import { FaTrash } from 'react-icons/fa';
 import { useHistory, useLocation } from 'react-router-dom';
+import axios from 'axios';
+import {connect} from 'react-redux'; 
 
-const Routr = () => {
+const Routr = (props) => {
 
     const mapContainer = useRef();
     const [lnglat, setLngLat] = useState([79.8998759,6.8278084]);
@@ -14,6 +16,7 @@ const Routr = () => {
     mapboxgl.accessToken = 'pk.eyJ1IjoibGFzaXRoODc5IiwiYSI6ImNrbjV2eW1tcTA4N2IycnM0eDY4c2xuZ3QifQ.1b2qEsuBFBVNg682HGe7hw';
     const [route,setRoute] = useState(new Route(mapboxgl));
     const [accId,setAccId] = useState('');
+    const [accoPoints,setAccoPoints] = useState([]);
     const [accoMarkers,setAccoMarkers] = useState([]);
     const [roundTrip,setRoundTrip] = useState(false);
     const [reOrder,setReOrder] = useState(true);
@@ -97,6 +100,8 @@ const Routr = () => {
             route.getRoute(Locations,options,reOrder)
             .then(response => {
                 setLngLat(Locations[0].lngLat);
+                setAccoPoints([]);
+                if(showAcco) getNearbyAcc();
                 const route = response.coordinates;
                 var geojson = {
                     type: 'Feature',
@@ -148,6 +153,118 @@ const Routr = () => {
         if (map.getSource('route')) map.removeSource('route');
         if(accoMarkers.length !== 0) accoMarkers.forEach(marker => marker.remove());
         setAccoMarkers([]);
+    }
+
+    const getNearbyAcc = async () => {
+        await new Promise((resolve,reject) => {
+            Locations.forEach(async (data,index) => {
+                let Bounds = getCoordinateBounds(data.lngLat,10000);
+                const query = {
+                    $and : [
+                        { Latitude : { $gte : Bounds.latRange[0]} },
+                        { Latitude : { $lte : Bounds.latRange[1]} },
+                        { Longitude : { $gte : Bounds.lngRange[0]} },
+                        { Longitude : { $lte : Bounds.lngRange[1]} },
+                    ]
+                }
+                try {
+                    const accoList = await axios.post('/accommodation',query,{
+                        headers : {
+                            'Content-Type' : 'application/json',
+                            'Accept' : 'application/json',
+                        }
+                    });
+                    setAccoPoints(oldPoints => [...oldPoints,...accoList.data]);
+                } catch (error) {
+                    console.log(error);
+                }
+                if(index === (Locations.length - 1)) {
+                    resolve();
+                }
+            });
+        })
+    }
+
+    const getCoordinateBounds = (lnglat,radius) => {
+        var ll = new mapboxgl.LngLat(lnglat[0],lnglat[1]);
+        const bound = ll.toBounds(radius).toArray();
+        const returnData = {
+            latRange : [bound[0][1],bound[1][1]],
+            lngRange : [bound[0][0],bound[1][0]],
+        }
+        return returnData;
+    }
+
+    useEffect(() => {
+        addAccomoMarkers();
+    },[accoPoints])
+
+    useEffect(() => {
+        if(!showAcco){
+            if(accoMarkers.length !== 0) accoMarkers.forEach(marker => marker.remove());
+            setAccoMarkers([]);
+        }else{
+            addAccomoMarkers();
+        }
+    },[showAcco]);
+
+    const addAccomoMarkers = () => {
+        if(accoMarkers.length !== 0) accoMarkers.forEach(marker => marker.remove());
+        setAccoMarkers([]);
+        
+        accoPoints.forEach(acc => {
+            var el = document.createElement('div');
+            el.className = 'marker';
+            const popup = new mapboxgl.Popup({offset:12}).setHTML(popupEl(acc));
+            const marker = new mapboxgl.Marker({
+                element : el
+            }).setLngLat([acc.Longitude,acc.Latitude])
+            .setPopup(popup)
+            .addTo(map);
+            setAccoMarkers(markers => [...markers,marker]);
+        });
+    }
+
+    useEffect(()=>{
+        reserve();
+    },[accId]);
+
+    const reserve = async () => {
+        if(accId !== ''){
+            if(props.user){
+                try {
+                    const accs = await axios.put('/reserve',{
+                        Acc_id : accId,
+                        User_id : props.user._id
+                    },{
+                        headers : {
+                            'Content-Type' : 'application/json',
+                            'Accept' : 'application/json'
+                        }
+                    }); 
+                    alert('Accommodation reserved!')
+                    let { from } = location.state || { from: { pathname: "/routr" } };
+                    history.replace(from);
+                } catch (error) {
+                    alert('Something went wrong ! \nRetry ..!')
+                }
+            }else{
+                let { from } = location.state || { from: { pathname: "/login" } };
+                history.replace(from);
+            }
+        }
+    }
+
+    const popupEl = (props) => {
+        return `
+            <div class="p-1 d-flex flex-column">
+                <h5 class="fw-bolder m-0">${props.Title}</h5>
+                <h6 class="fw-normal m-0" style="font-size:0.8rem">${props.Address}</h6>
+                <h6 class="fw-normal m-0" style="font-size:0.8rem">${props.Type}</h6>
+                <h5 class="fw-bolder mt-1">Rs.${props.Amount.toFixed(2)}<sub>/per day</sub></h5>
+                <a href="/routr?reserve=${props._id}" class="btn btn-sm btn-danger mt-2 p-1">Reserve</a>
+            </div>
+        `;
     }
 
         return (
@@ -217,4 +334,4 @@ const Routr = () => {
         );
 }
 
-export default Routr
+export default connect(state => ({...state}))(Routr)
