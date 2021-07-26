@@ -59,10 +59,10 @@ function App(props) {
                     <Route exact path= "/ownrRes">
                         <Res />
                     </Route>
-
+{/* 
                     <Route exact path= "/ownrRep">
                         <Report />
-                    </Route>
+                    </Route> */}
 
                     <Route exact path= "/ownrAcc/create">
                         <Create />

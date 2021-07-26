@@ -4,6 +4,7 @@ const Schema = mongoose.Schema;
 const userAcc = new Schema({
     ReserveDate : { type : Date, required : true},
     Acc_id : { type : Schema.Types.ObjectId, ref : 'accommodations', required : true},
+    Owner_id : { type : Schema.Types.ObjectId, ref : 'users', required : true},
     User_id : { type : Schema.Types.ObjectId, ref : 'users', required : true},
 });
 

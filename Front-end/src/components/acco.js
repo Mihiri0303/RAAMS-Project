@@ -6,6 +6,9 @@ import { connect } from 'react-redux';
 
 const Accommodation = (props) => {
     const [accList,setAccList] = useState([]);
+    const [searchText,setsearchText] = useState('');
+    const [min,setMin] = useState('');
+    const [max,setMax] = useState('');
 
     useEffect(() => {
         getAcc();
@@ -13,7 +16,14 @@ const Accommodation = (props) => {
 
     const getAcc = async () => {
         try {
-            const accs = await axios.get('/accommodation',{
+            const params = {};
+            if(searchText !== '') params.$text = JSON.stringify({ $search: "\""+searchText+"\"", $caseSensitive: false });
+            // if(min !== '') params.Amount = '$gte '+min;
+            // if(max !== '') params.Amount = '$lte '+max;
+            const accs = await axios({
+                method : 'get',
+                url : '/accommodation',
+                params : params,
                 headers : {
                     'Accept' : 'application/json'
                 }
@@ -27,9 +37,11 @@ const Accommodation = (props) => {
     const onReserve = async (acco_id) => {
         if(!window.confirm("Are you sure ?")) return false;
         try {
+            const acc = accList.find(data => data._id === acco_id)
             const accs = await axios.put('/reserve',{
                 Acc_id : acco_id,
-                User_id : props.user._id
+                User_id : props.user._id,
+                Owner_id : acc.Owner_id._id
             },{
                 headers : {
                     'Content-Type' : 'application/json',
@@ -50,12 +62,12 @@ const Accommodation = (props) => {
                         <div className="d-flex flex-column gap-2">
                             <h4>Filter search</h4>
                             <div className="d-flex flex-column gap-2 ">
-                                <input className={`form-control shadow-sm border-0 py-2`} style={{fontSize:"0.8rem"}} placeholder="Search Text" />                      
-                                <div className="d-flex gap-2 ">    
-                                    <input className={`form-control shadow-sm border-0 py-2`} type="Number" style={{fontSize:"0.8rem"}} placeholder="Min Amount" />                      
-                                    <input className={`form-control shadow-sm border-0 py-2`} type="Number" style={{fontSize:"0.8rem"}} placeholder="Max Amount" /> 
-                                </div>
-                                    <button className="btn btn-sm px-5 py-1 btn-primary mt-2">Search</button>
+                                <input className={`form-control shadow-sm border-0 py-2`} value={searchText} onChange={(e) => setsearchText(e.target.value)} style={{fontSize:"0.8rem"}} placeholder="Search Text" />                      
+                                {/* <div className="d-flex gap-2 ">    
+                                    <input className={`form-control shadow-sm border-0 py-2`} value={min} onChange={(e) => setMin(e.target.value)} type="Number" style={{fontSize:"0.8rem"}} placeholder="Min Amount" />                      
+                                    <input className={`form-control shadow-sm border-0 py-2`} value={max} onChange={(e) => setMax(e.target.value)} type="Number" style={{fontSize:"0.8rem"}} placeholder="Max Amount" /> 
+                                </div> */}
+                                    <button className="btn btn-sm px-5 py-1 btn-primary mt-2" onClick={getAcc}>Search</button>
 
                             </div>
                         </div>
@@ -68,6 +80,7 @@ const Accommodation = (props) => {
                                         <h5 className="card-title my-0">{acc.Title}<p className="badge bg-secondary ms-2 my-0">{acc.Mobile}</p></h5>
                                         <h6 className="card-subtitle mb-2 text-muted my-0 mt-1">{acc.Type}</h6>
                                         <p className="card-text my-0">{acc.Address}</p>
+                                        <p className="card-text my-0 ">{acc.Amount.toFixed(2)}</p>
                                         <div className="float-end ml-auto ">
                                             <button className="btn btn-sm px-3 py-1 btn-outline-success mt-2" onClick={() => onReserve(acc._id)}>Reserve</button>
                                         </div>

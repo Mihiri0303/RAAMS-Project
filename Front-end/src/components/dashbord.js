@@ -11,7 +11,7 @@ const Dash = () => {
                             <div className="row gap-3">
                                 <Link to="/ownrAcc" className="text-decoration-none col-md-3 bold py-5 btn btn-success rounded-3">Manage Accommodation</Link>
                                 <Link to="/ownrRes" className="text-decoration-none col-md-3 bold py-5 btn btn-info rounded-3">Reservations</Link>
-                                <Link to="/ownrRep" className="text-decoration-none col-md-3 bold py-5  btn btn-warning rounded-3">Report</Link>
+                                {/* <Link to="/ownrRep" className="text-decoration-none col-md-3 bold py-5  btn btn-warning rounded-3">Report</Link> */}
                             </div>
                         </div>
                     </div>

@@ -33,6 +33,8 @@ const My = (props) => {
                                         <h5 className="card-title my-0">{acc.Acc_id.Title}<p className="badge bg-secondary ms-2 my-0">{acc.Acc_id.Mobile}</p></h5>
                                         <h6 className="card-subtitle mb-2 text-muted my-0 mt-1">{acc.Acc_id.Type}</h6>
                                         <p className="card-text my-0">{acc.Acc_id.Address}</p>
+                                        <p className="card-text my-0">{acc.Amount.toFixed(2)}</p>
+                                        <p className="card-text my-0">Reserved Date : {new Date(acc.ReserveDate).toLocaleString()}</p>
                                     </div>
                                 </div>
                             )

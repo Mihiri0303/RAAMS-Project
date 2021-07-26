@@ -233,9 +233,16 @@ const Routr = (props) => {
         if(accId !== ''){
             if(props.user){
                 try {
+                    const acc = await axios.get('/accommodation/'+accId,{
+                        headers : {
+                            'Content-Type' : 'application/json',
+                            'Accept' : 'application/json'
+                        }
+                    });
                     const accs = await axios.put('/reserve',{
                         Acc_id : accId,
-                        User_id : props.user._id
+                        User_id : props.user._id,
+                        Owner_id : acc.data.Owner_id._id
                     },{
                         headers : {
                             'Content-Type' : 'application/json',
@@ -243,10 +250,12 @@ const Routr = (props) => {
                         }
                     }); 
                     alert('Accommodation reserved!')
-                    let { from } = location.state || { from: { pathname: "/routr" } };
-                    history.replace(from);
                 } catch (error) {
                     alert('Something went wrong ! \nRetry ..!')
+                }
+                finally{
+                    let { from } = location.state || { from: { pathname: "/routr" } };
+                    history.replace(from);
                 }
             }else{
                 let { from } = location.state || { from: { pathname: "/login" } };

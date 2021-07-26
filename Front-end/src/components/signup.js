@@ -67,6 +67,7 @@ const SignUp = (props) => {
                             Confirm : '',
                             Verified: false
                         }}
+                        enableReinitialize={true}
                         validationSchema={SignupSchema}
                         onSubmit={handleSubmit}>
                         {({errors,touched}) => (
