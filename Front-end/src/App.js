@@ -36,15 +36,15 @@ function App(props) {
             <Route exact path= "/signup">
                 <SignUp />
             </Route>
+            <Route exact path= "/acco">
+                <Accommodation />
+            </Route>
             { props.user && Object.keys(props.user).length !== 0 ?
                 <Switch>
                     <Route exact path= "/dashbord">
                         <Dash />
                     </Route>
 
-                    <Route exact path= "/acco">
-                        <Accommodation />
-                    </Route>
 
                     <Route exact path= "/myList">
                         <My />

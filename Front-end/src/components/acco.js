@@ -7,8 +7,8 @@ import { connect } from 'react-redux';
 const Accommodation = (props) => {
     const [accList,setAccList] = useState([]);
     const [searchText,setsearchText] = useState('');
-    const [min,setMin] = useState('');
-    const [max,setMax] = useState('');
+    // const [min,setMin] = useState('');
+    // const [max,setMax] = useState('');
 
     useEffect(() => {
         getAcc();
