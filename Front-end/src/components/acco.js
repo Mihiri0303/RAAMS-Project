@@ -37,7 +37,10 @@ const Accommodation = (props) => {
     }
 
     const onReserve = async (acco_id) => {
-        if( !(props.user && Object.keys(props.user).length !== 0 )) history.push('/login') 
+        if(!(props.user && Object.keys(props.user).length !== 0)) {
+            history.push('/login') 
+            return false;
+        }
         if(!window.confirm("Are you sure ?")) return false;
         try {
             const acc = accList.find(data => data._id === acco_id)
