@@ -231,7 +231,7 @@ const Routr = (props) => {
 
     const reserve = async () => {
         if(accId !== ''){
-            if(props.user){
+            if(props.user && Object.keys(props.user).length !== 0){
                 try {
                     const acc = await axios.get('/accommodation/'+accId,{
                         headers : {
