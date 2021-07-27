@@ -1,6 +1,7 @@
 import React,{useEffect,useState} from 'react'
 import axios from 'axios';
 import { connect } from 'react-redux';
+import { useHistory  } from 'react-router';
 
 
 
@@ -10,6 +11,7 @@ const Accommodation = (props) => {
     // const [min,setMin] = useState('');
     // const [max,setMax] = useState('');
 
+    const history = useHistory();
     useEffect(() => {
         getAcc();
     },[]) // eslint-disable-line
@@ -35,6 +37,7 @@ const Accommodation = (props) => {
     }
 
     const onReserve = async (acco_id) => {
+        if( !(props.user && Object.keys(props.user).length !== 0 )) history.push('/login') 
         if(!window.confirm("Are you sure ?")) return false;
         try {
             const acc = accList.find(data => data._id === acco_id)
