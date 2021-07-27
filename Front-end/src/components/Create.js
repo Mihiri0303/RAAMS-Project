@@ -34,7 +34,7 @@ const Create = (props) => {
         Longitude :'',
       Amount : '',
     });
-    mapboxgl.accessToken = 'pk.eyJ1IjoibGFzaXRoODc5IiwiYSI6ImNrbjV2eW1tcTA4N2IycnM0eDY4c2xuZ3QifQ.1b2qEsuBFBVNg682HGe7hw';
+    mapboxgl.accessToken = 'pk.eyJ1IjoibWloaXIzOTA5MyIsImEiOiJja3JsbTI3NWIxYjZyMnVtbDY4c3l2YTI1In0.JrooBRfiaudzvBh3Npz1ZQ';
 
     const history = useHistory();
     const location = useLocation();
@@ -84,7 +84,7 @@ const Create = (props) => {
                 .addTo(map);
             });
         }
-    },[marker]);
+    },[marker]);// eslint-disable-line
 
     useEffect(() => {
         if(map !== undefined){
@@ -99,7 +99,7 @@ const Create = (props) => {
             // setValue('Latitude',lnglat.lat);
             // setValue('Longitude',lnglat.lng);
         }
-    },[lnglat]);
+    },[lnglat]);// eslint-disable-line
 
     const handleSubmit = async (values) => {
         try {
@@ -136,7 +136,7 @@ const Create = (props) => {
         if(accId){
             setForm();
         }
-    },[accId]);
+    },[accId]);// eslint-disable-line
     
 
     const setForm = async () => {

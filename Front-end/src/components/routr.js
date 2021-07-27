@@ -10,11 +10,11 @@ const Routr = (props) => {
 
     const mapContainer = useRef();
     const [lnglat, setLngLat] = useState([79.8998759,6.8278084]);
-    const [zoom, setZoom] = useState(8);
+    const [zoom, setZoom] = useState(8);// eslint-disable-line
     const [Locations,setLocations] = useState([]);
     const [map,setMap] = useState();
-    mapboxgl.accessToken = 'pk.eyJ1IjoibGFzaXRoODc5IiwiYSI6ImNrbjV2eW1tcTA4N2IycnM0eDY4c2xuZ3QifQ.1b2qEsuBFBVNg682HGe7hw';
-    const [route,setRoute] = useState(new Route(mapboxgl));
+    mapboxgl.accessToken = 'pk.eyJ1IjoibWloaXIzOTA5MyIsImEiOiJja3JsbTI3NWIxYjZyMnVtbDY4c3l2YTI1In0.JrooBRfiaudzvBh3Npz1ZQ';
+    const [route,setRoute] = useState(new Route(mapboxgl));// eslint-disable-line
     const [accId,setAccId] = useState('');
     const [accoPoints,setAccoPoints] = useState([]);
     const [accoMarkers,setAccoMarkers] = useState([]);
@@ -80,7 +80,7 @@ const Routr = (props) => {
         });
         setMap(map);
         return () => map.remove();
-    },[]);
+    },[]);// eslint-disable-line
 
     const DeleteLocation =(e) => {
         const data = Locations.splice(e,1);
@@ -197,7 +197,7 @@ const Routr = (props) => {
 
     useEffect(() => {
         addAccomoMarkers();
-    },[accoPoints])
+    },[accoPoints])// eslint-disable-line
 
     useEffect(() => {
         if(!showAcco){
@@ -206,7 +206,7 @@ const Routr = (props) => {
         }else{
             addAccomoMarkers();
         }
-    },[showAcco]);
+    },[showAcco]);// eslint-disable-line 
 
     const addAccomoMarkers = () => {
         if(accoMarkers.length !== 0) accoMarkers.forEach(marker => marker.remove());
@@ -227,7 +227,7 @@ const Routr = (props) => {
 
     useEffect(()=>{
         reserve();
-    },[accId]);
+    },[accId]);// eslint-disable-line
 
     const reserve = async () => {
         if(accId !== ''){
@@ -239,7 +239,7 @@ const Routr = (props) => {
                             'Accept' : 'application/json'
                         }
                     });
-                    const accs = await axios.put('/reserve',{
+                    const accs = await axios.put('/reserve',{// eslint-disable-line
                         Acc_id : accId,
                         User_id : props.user._id,
                         Owner_id : acc.data.Owner_id._id

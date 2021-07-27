@@ -67,7 +67,7 @@ const Login = (props) => {
                                             Please provide a valid Password.
                                         </div>}
                                     </div>
-                                    <div class={`text-danger`}>
+                                    <div className={`text-danger`}>
                                         { status && status.Error ? status.Error : '' }
                                     </div>
                                     <div className="d-flex gap-2 justify-content-center align-items-center">
