@@ -13,7 +13,7 @@ import store from './store/index';
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 axios.defaults.headers.post['Accept'] = 'application/json';
-axios.defaults.baseURL = 'http://localhost:8000/api';
+axios.defaults.baseURL = 'http://34.93.101.247:8000/api';
 
 ReactDOM.render(
   <React.StrictMode>
